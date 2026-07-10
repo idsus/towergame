@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#060a18" />
+    <meta name="description" content="Aetherfall Bastion, a cinematic 3D tower defense game." />
+    <title>Aetherfall Bastion</title>
+  </head>
+  <body>
+    <main id="game-shell">
+      <div id="canvas-wrap" aria-label="3D battlefield"></div>
+
+      <header class="topbar" aria-label="Battle status">
+        <div class="brand-lockup">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <div>
+            <p class="eyebrow">THE LAST SKYWARD KEEP</p>
+            <h1>AETHERFALL</h1>
+          </div>
+        </div>
+        <div class="battle-stats">
+          <div class="stat"><span>AETHER</span><strong id="gold-value">260</strong></div>
+          <div class="stat core-stat"><span>CORE</span><strong id="lives-value">20</strong></div>
+          <div class="stat"><span>WAVE</span><strong><b id="wave-value">0</b>/12</strong></div>
+        </div>
+        <div class="time-controls" aria-label="Time controls">
+          <button id="sound-btn" class="icon-button" aria-label="Toggle sound" title="Toggle sound">♪</button>
+          <button id="pause-btn" class="icon-button" aria-label="Pause game" title="Pause (P)">Ⅱ</button>
+          <button id="speed-btn" class="speed-button" aria-label="Change game speed">1×</button>
+        </div>
+      </header>
+
+      <aside class="mission-panel">
+        <p class="eyebrow">TACTICAL DIRECTIVE</p>
+        <p id="mission-copy">Fortify the aether road before the first breach.</p>
+        <div class="threat-line"><span id="threat-label">CALM</span><i><b id="threat-fill"></b></i></div>
+      </aside>
+
+      <aside id="inspector" class="inspector" aria-live="polite">
+        <button id="close-inspector" class="close-button" aria-label="Close tower inspector">×</button>
+        <p class="eyebrow">TOWER MATRIX</p>
+        <div class="inspector-heading">
+          <span id="inspector-glyph">✦</span>
+          <div><h2 id="inspector-name">Select a tower</h2><p id="inspector-level">FIELD INTELLIGENCE</p></div>
+        </div>
+        <p id="inspector-description">Choose a constructed tower to inspect its resonance, upgrade path, and overdrive status.</p>
+        <div class="inspector-metrics">
+          <div><span>POWER</span><strong id="metric-power">—</strong></div>
+          <div><span>RANGE</span><strong id="metric-range">—</strong></div>
+          <div><span>RESONANCE</span><strong id="metric-resonance">—</strong></div>
+        </div>
+        <div id="inspector-actions" class="inspector-actions">
+          <button id="upgrade-btn" class="primary-action" disabled>UPGRADE <span id="upgrade-cost"></span></button>
+          <button id="overdrive-btn" disabled>OVERDRIVE <span id="overdrive-status"></span></button>
+          <button id="sell-btn" class="quiet-action" disabled>DISMANTLE <span id="sell-value"></span></button>
+        </div>
+      </aside>
+
+      <div id="wave-banner" class="wave-banner" aria-live="assertive">
+        <p id="wave-kicker">WAVE 01</p><h2 id="wave-title">THE FIRST BREACH</h2><span></span>
+      </div>
+
+      <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+
+      <section class="command-dock" aria-label="Tower construction">
+        <div class="wave-command">
+          <button id="start-wave-btn">
+            <span id="start-wave-label">BEGIN WAVE</span>
+            <small id="start-wave-bonus">EARLY BONUS +18</small>
+          </button>
+          <div class="countdown"><span>NEXT BREACH</span><strong id="countdown-value">20</strong></div>
+        </div>
+        <div class="tower-list" role="toolbar" aria-label="Select a tower">
+          <button class="tower-choice" data-tower="sentinel" style="--tower-color:#ffb24b">
+            <kbd>1</kbd><span class="tower-glyph">◆</span><span><strong>SENTINEL</strong><small>65 · PRECISION</small></span>
+          </button>
+          <button class="tower-choice" data-tower="frost" style="--tower-color:#62d9ff">
+            <kbd>2</kbd><span class="tower-glyph">✣</span><span><strong>RIMEWELL</strong><small>85 · SLOW</small></span>
+          </button>
+          <button class="tower-choice" data-tower="mortar" style="--tower-color:#ff6f61">
+            <kbd>3</kbd><span class="tower-glyph">⬢</span><span><strong>STARFORGE</strong><small>115 · SPLASH</small></span>
+          </button>
+          <button class="tower-choice" data-tower="prism" style="--tower-color:#b38cff">
+            <kbd>4</kbd><span class="tower-glyph">✦</span><span><strong>PRISM</strong><small>140 · PIERCE</small></span>
+          </button>
+        </div>
+        <p class="build-hint" id="build-hint">Select a tower, then choose a vacant rune.</p>
+      </section>
+
+      <div id="cursor-tip" class="cursor-tip"></div>
+
+      <section id="intro" class="intro-overlay">
+        <div class="intro-copy">
+          <p class="eyebrow">AN INTERACTIVE SIEGE</p>
+          <h2>THE SKY IS<br />BREAKING OPEN.</h2>
+          <p>Build a resonant defense across the last floating keep. Mix tower disciplines, bend time, and survive twelve escalating breaches.</p>
+          <button id="enter-game-btn">ENTER THE BASTION <span>↗</span></button>
+          <small>Drag to orbit · Scroll to zoom · 1–4 to build</small>
+        </div>
+        <div class="intro-index"><span>CHAPTER</span><strong>Ⅰ</strong><p>Night of the falling stars</p></div>
+      </section>
+
+      <section id="result-overlay" class="result-overlay" aria-hidden="true">
+        <p class="eyebrow" id="result-kicker">BASTION SECURED</p>
+        <h2 id="result-title">DAWN RETURNS.</h2>
+        <p id="result-copy">The aether road holds. The storm remembers your name.</p>
+        <div class="result-stats">
+          <div><span>SCORE</span><strong id="result-score">0</strong></div>
+          <div><span>WAVES</span><strong id="result-wave">0</strong></div>
+          <div><span>CORE</span><strong id="result-core">0</strong></div>
+        </div>
+        <button id="restart-btn">DEFEND AGAIN</button>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
